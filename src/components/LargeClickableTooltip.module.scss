@@ -1,0 +1,21 @@
+.largeClickableTooltip {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 500px;
+    opacity: 1;
+    background-color: #0F1013;
+    border: 1px solid #20242b;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    padding: 0 32px;
+
+    // Selecting tooltip arrow
+    > div:last-child {
+        display: none;
+    }
+}
