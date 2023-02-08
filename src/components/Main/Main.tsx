@@ -5,7 +5,9 @@ import styles from './Main.module.scss';
 const Main: FunctionComponent = () => (
     <main className={styles.main}>
         <section className={styles.section}>
-            <p id="standard-tooltip">Hover me!</p>
+            <a href="https://pokeapi.co/" id="standard-tooltip">
+                <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"/>
+            </a>
             <Tooltip anchorId='standard-tooltip' place='top'>
                 Standard tooltip!
             </Tooltip>

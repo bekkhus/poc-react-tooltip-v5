@@ -8,8 +8,8 @@ type ListItemType = {
 };
 
 const ListItem: FunctionComponent<ListItemType> = ({ item }) => (
-    <div id={`tooltip-${item.id}`} className={styles.listItem} key={item.id}>
-        <img className={styles.listItemImg} src={item.sprite} /> 
+    <a className={styles.listItem} id={`tooltip-${item.id}`} href={`https://pokeapi.co/api/v2/pokemon/${item.name}`} key={item.id}>
+        <img className={styles.listItemImg} src={item.sprite} />
         <p className={styles.listItemLabel}>{item.name}</p>
         <PokemonInfoTooltip
             resourceId={item.id}
@@ -18,7 +18,7 @@ const ListItem: FunctionComponent<ListItemType> = ({ item }) => (
             offset={20}
             positionStrategy="fixed"
         />
-    </div>
+    </a>
 );
 
 export default ListItem;
