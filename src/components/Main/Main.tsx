@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Tooltip from "../Tooltip/Tooltip";
+import StandardTooltip from "../StandardTooltip/StandardTooltip";
 import styles from './Main.module.scss';
 
 const Main: FunctionComponent = () => (
@@ -8,9 +8,9 @@ const Main: FunctionComponent = () => (
             <a href="https://pokeapi.co/" id="standard-tooltip">
                 <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"/>
             </a>
-            <Tooltip anchorId='standard-tooltip' place='top'>
+            <StandardTooltip anchorId='standard-tooltip' place='top'>
                 Standard tooltip!
-            </Tooltip>
+            </StandardTooltip>
         </section>
         <section className={styles.section} />
     </main>
