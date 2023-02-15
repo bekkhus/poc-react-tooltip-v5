@@ -1,0 +1,6 @@
+.scrollableArea {
+	overflow-y: scroll;
+	overflow-x: hidden; /* TODO: make customizable */
+
+	will-change: scroll-position;
+}
