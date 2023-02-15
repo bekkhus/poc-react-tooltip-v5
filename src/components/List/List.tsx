@@ -1,4 +1,4 @@
-import { Fragment, FunctionComponent } from "react"
+import { Fragment, FunctionComponent, useCallback } from "react"
 import { BasicPokemon } from "../../models/BasicPokemon";
 import ListItem from "../ListItem/ListItem";
 import useSWR from 'swr';
@@ -9,9 +9,22 @@ import PokemonInfoPopover from "../PokemonInfoPopover/PokemonInfoPopover";
 
 const List: FunctionComponent = () => {
     const { data } = useSWR<BasicPokemon[]>(
-        () => getPokemonRange.getKey(400),
+        () => getPokemonRange.getKey(4000),
         getPokemonRange.fetcher
     );
+
+    const renderPopovers = useCallback(() => (
+        data?.map((item, index) => (
+            <PokemonInfoPopover
+                key={item.name}
+                resourceId={(index || 0) + 1}
+                anchorId={'id-' + ((index || 0) + 1)}
+                place='left'
+                offset={20}
+                positionStrategy="fixed"
+            />
+        )) || null
+    ), [data]);
 
     if (!data?.length) {
         return null;
@@ -19,14 +32,7 @@ const List: FunctionComponent = () => {
 
     const friendRequestRenderer: LazyItemRenderer = ({ item, index }) => (
         <Fragment key={item.name}>
-            <ListItem id={'id-' + item.name} index={(index || 0) + 1} item={item} />
-            <PokemonInfoPopover
-                resourceId={(index || 0) + 1}
-                anchorId={'id-' + item.name}
-                place='bottom'
-                offset={20}
-                positionStrategy="fixed"
-            />
+            <ListItem id={'id-' + ((index || 0) + 1)} index={(index || 0) + 1} item={item} />
         </Fragment>
     );
 
@@ -35,6 +41,7 @@ const List: FunctionComponent = () => {
             <LazyView source={data}>
                 <LazyViewItem renderer={friendRequestRenderer} />
             </LazyView>
+            {renderPopovers()}
         </div>
     )
 }
