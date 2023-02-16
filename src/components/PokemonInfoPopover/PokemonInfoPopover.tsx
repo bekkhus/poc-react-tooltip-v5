@@ -27,7 +27,7 @@ const PokemonInfoPopover: FunctionComponent<PokemonInfoPopoverProps> = ({ resour
 
         label = isLoading ? 'Loading...' : 'Validating...';
 
-        return <p>{label}</p>;
+        return <p id={rest.anchorId}>{label}</p>;
     }
 
     const renderContent = () => (
