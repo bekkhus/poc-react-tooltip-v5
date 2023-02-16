@@ -7,6 +7,8 @@ import { getPokemonRange } from "../../services/pokemonService";
 import LazyView, { LazyItemRenderer, LazyViewItem } from "../LazyView/LazyView";
 import PokemonInfoPopover from "../PokemonInfoPopover/PokemonInfoPopover";
 
+const getPopoverId = (index?: number) => 'id-' + ((index || 0) + 1);
+
 const List: FunctionComponent = () => {
     const { data } = useSWR<BasicPokemon[]>(
         () => getPokemonRange.getKey(4000),
@@ -18,7 +20,7 @@ const List: FunctionComponent = () => {
             <PokemonInfoPopover
                 key={item.name}
                 resourceId={(index || 0) + 1}
-                anchorId={'id-' + ((index || 0) + 1)}
+                anchorId={getPopoverId(index)}
                 place='left'
                 offset={20}
                 positionStrategy="fixed"
@@ -32,7 +34,7 @@ const List: FunctionComponent = () => {
 
     const friendRequestRenderer: LazyItemRenderer = ({ item, index }) => (
         <Fragment key={item.name}>
-            <ListItem id={'id-' + ((index || 0) + 1)} index={(index || 0) + 1} item={item} />
+            <ListItem id={getPopoverId(index)} index={(index || 0) + 1} item={item} />
         </Fragment>
     );
 
