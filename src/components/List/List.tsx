@@ -6,35 +6,53 @@ import styles from './List.module.scss';
 import { getPokemonRange } from "../../services/pokemonService";
 import LazyView, { LazyItemRenderer, LazyViewItem } from "../LazyView/LazyView";
 import PokemonInfoPopover from "../PokemonInfoPopover/PokemonInfoPopover";
+import { ITooltip } from "react-tooltip";
 
-const getPopoverId = (index?: number) => 'id-' + ((index || 0) + 1);
+const getPopoverId = (index: number = 0) => 'popover-id-' + (index + 1);
 
-const List: FunctionComponent = () => {
+type ListProps = {
+    popoverPlace?: ITooltip['place'];
+    renderPopoverOutside?: boolean;
+}
+
+const List: FunctionComponent<ListProps> = ({ popoverPlace = 'top', renderPopoverOutside = false }) => {
     const { data } = useSWR<BasicPokemon[]>(
-        () => getPokemonRange.getKey(4000),
+        () => getPokemonRange.getKey(1000),
         getPokemonRange.fetcher
     );
 
-    const renderPopovers = useCallback(() => (
+    const renderPopovers = () => (
         data?.map((item, index) => (
             <PokemonInfoPopover
                 key={item.name}
-                resourceId={(index || 0) + 1}
-                anchorId={getPopoverId(index)}
-                place='left'
+                pokemonId={index + 1}
+                id={getPopoverId(index)}
+                place={popoverPlace}
                 offset={20}
                 positionStrategy="fixed"
             />
         )) || null
-    ), [data]);
+    );
 
     if (!data?.length) {
         return null;
     }
 
-    const friendRequestRenderer: LazyItemRenderer = ({ item, index }) => (
+    const friendRequestRenderer: LazyItemRenderer = ({ item, index = 0 }) => (
         <Fragment key={item.name}>
-            <ListItem id={getPopoverId(index)} index={(index || 0) + 1} item={item} />
+            <ListItem id={getPopoverId(index)} pokemonId={(index || 0) + 1} item={item} />
+            {
+                !renderPopoverOutside && (
+                    <PokemonInfoPopover
+                        key={item.name}
+                        pokemonId={index + 1}
+                        id={getPopoverId(index)}
+                        place={popoverPlace}
+                        offset={20}
+                        positionStrategy="fixed"
+                    />
+                )
+            }
         </Fragment>
     );
 
@@ -43,7 +61,7 @@ const List: FunctionComponent = () => {
             <LazyView source={data}>
                 <LazyViewItem renderer={friendRequestRenderer} />
             </LazyView>
-            {renderPopovers()}
+            {renderPopoverOutside && renderPopovers()}
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useState } from "react";
+import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { ITooltip, Tooltip as ReactTooltip } from "react-tooltip";
 import useSWR from 'swr';
 import { Pokemon } from "../../models/Pokemon";
@@ -7,10 +7,10 @@ import styles from './PokemonInfoPopover.module.scss';
 
 type PokemonInfoPopoverProps = {
     children?: ReactNode;
-    resourceId: number;
+    pokemonId: number;
 } & ITooltip;
 
-const PokemonInfoPopover: FunctionComponent<PokemonInfoPopoverProps> = ({ resourceId, ...rest }) => {
+const PokemonInfoPopover: FunctionComponent<PokemonInfoPopoverProps> = ({ pokemonId: resourceId, ...rest }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const { data, isLoading, error } = useSWR<Pokemon>(
@@ -27,7 +27,7 @@ const PokemonInfoPopover: FunctionComponent<PokemonInfoPopoverProps> = ({ resour
 
         label = isLoading ? 'Loading...' : 'Validating...';
 
-        return <p id={rest.anchorId}>{label}</p>;
+        return <p>{label}</p>;
     }
 
     const renderContent = () => (
@@ -42,8 +42,8 @@ const PokemonInfoPopover: FunctionComponent<PokemonInfoPopoverProps> = ({ resour
             className={styles.pokemonInfoPopover}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            delayHide={100}
-            delayShow={100}
+            delayHide={200}
+            delayShow={200}
             clickable
             {...rest}
         >
